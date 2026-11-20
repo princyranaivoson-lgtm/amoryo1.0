@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  
+  <!-- PWA / App-like -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#c6201d">
+  <meta name="description" content="Amoryo – Des surprises qui viennent du cœur">
+  
+  <title>Amoryo</title>
+  
+  <!-- Favicon simple (tu peux le remplacer plus tard) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: #1a0a1e;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    
+    #loader {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, #c6201d, #4a0a0c 40%, #1a0a1e);
+      color: white;
+      z-index: 10;
+      transition: opacity 0.4s ease;
+    }
+    
+    #loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .heart {
+      font-size: 48px;
+      margin-bottom: 16px;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+    
+    #loader p {
+      font-size: 14px;
+      opacity: 0.85;
+      letter-spacing: 1px;
+    }
+    
+    iframe {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      background: #1a0a1e;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loader">
+    <div class="heart">❤️</div>
+    <p>Amoryo se charge…</p>
+  </div>
+
+  <!-- 
+    ⚠️ REMPLACE l’URL ci-dessous par TON URL /exec 
+    Exemple : https://script.google.com/macros/s/AKfycb.../exec
+  -->
+  <iframe 
+    id="app"
+    src="https://script.google.com/macros/s/AKfycbw1-yWazldTmd7iCZ_GJuyUUj-1xM74E2teYm7gJ0ml-i5XyLQIB6gIZKxMAl3EeTtC/exec"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen"
+    allowfullscreen
+  ></iframe>
+
+  <script>
+    const iframe = document.getElementById('app');
+    const loader = document.getElementById('loader');
+
+    // Cache le loader dès que l’iframe a chargé
+    iframe.addEventListener('load', () => {
+      setTimeout(() => {
+        loader.classList.add('hidden');
+      }, 300);
+    });
+
+    // Sécurité : si l’iframe met trop de temps, on cache quand même le loader
+    setTimeout(() => {
+      loader.classList.add('hidden');
+    }, 8000);
+
+    // Optionnel : écoute le message "surprise-pret" envoyé par ton app
+    window.addEventListener('message', (event) => {
+      if (event.data === 'surprise-pret') {
+        loader.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
